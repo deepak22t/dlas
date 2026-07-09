@@ -1,0 +1,6 @@
+fastapi[standard]
+langgraph
+langchain-groq
+uvicorn 
+python-dotenv 
+pydantic-settings
