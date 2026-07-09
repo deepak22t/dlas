@@ -8,5 +8,5 @@ class ChatResponse(BaseModel):
     status: str
 
 class HistoryResponse(BaseModel):
-    task_id: str
+    history: list[str]
     status: str
