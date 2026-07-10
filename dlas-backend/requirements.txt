@@ -7,3 +7,6 @@ pydantic-settings
 sqlalchemy
 psycopg2
 alembic
+celery
+redis==5.2.1
+groq
