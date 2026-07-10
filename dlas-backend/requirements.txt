@@ -4,3 +4,6 @@ langchain-groq
 uvicorn 
 python-dotenv 
 pydantic-settings
+sqlalchemy
+psycopg2
+alembic
