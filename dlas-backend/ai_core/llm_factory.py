@@ -5,9 +5,11 @@ from app.core.config import get_settings
 settings = get_settings()
 
 
-def get_llm():
-    return ChatGroq(
-        model=settings.groq_model,
-        api_key=settings.groq_api_key,
-        temperature=0,
-    )
+class LLMFactory:
+    @staticmethod
+    def create():
+        return ChatGroq(
+            model=settings.groq_model,
+            api_key=settings.groq_api_key,
+            temperature=0,
+        )

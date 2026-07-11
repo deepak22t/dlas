@@ -1,12 +1,10 @@
-import time
-
 from app.database.session import SessionLocal
 from app.models.task import Task
 from app.models.task import TaskStatus
 from worker.celery_app import celery
-from ai_core.ai_service import AIService
-
-ai_service = AIService()
+from ai_core.graph import graph
+# Ye import missing tha:
+from langchain_core.messages import HumanMessage
 
 @celery.task(name="process_chat_task")
 def process_chat_task(task_id: str, text: str) -> str:
@@ -25,13 +23,24 @@ def process_chat_task(task_id: str, text: str) -> str:
         # Mark task as processing
         task.status = TaskStatus.PROCESSING
         db.commit()
-
-        # Simulate long-running work
-        #time.sleep(5)
-
-        # Dummy output (LLM response will replace this later)
-        result = ai_service.generate_response(text)
-
+        
+        # Configuration metadata setup karein checkpointing ke liye
+        thread_id = "test_id"
+        config = {"configurable": {"thread_id": thread_id}}
+        state = {
+                    "task_id": task_id,
+                    "messages": [HumanMessage(content=text)]
+                }
+        
+        # Text input ko HumanMessage object me wrap karein
+        response = graph.invoke(
+            state,
+            config=config,
+        )
+    
+        # State ke aakhri message (Supervisor ka response) se content nikalein
+        result = response["messages"][-1].content
+    
         task.status = TaskStatus.COMPLETED
         task.result = result
         db.commit()
