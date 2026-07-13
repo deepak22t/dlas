@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from graph import app_graph
-
 app = FastAPI()
 
 class ChatRequest(BaseModel):

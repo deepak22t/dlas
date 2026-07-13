@@ -21,3 +21,10 @@ Thumbs.db
 __pycache__/
 *.py[cod]
 *.pyo
+test/
+Folder3.zip
+Folder2.zip
+Folder.zip
+Dockerfile
+myvenv/
+../myvenv/

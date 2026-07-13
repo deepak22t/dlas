@@ -2,7 +2,8 @@ from app.database.session import SessionLocal
 from app.models.task import Task
 from app.models.task import TaskStatus
 from worker.celery_app import celery
-from ai_core.graph import graph
+from ai_core.graph import get_graph
+from ai_core.state import get_postgres_checkpointer
 # Ye import missing tha:
 from langchain_core.messages import HumanMessage
 
@@ -20,27 +21,29 @@ def process_chat_task(task_id: str, text: str) -> str:
         if task is None:
             return "Task not found"
 
-        # Mark task as processing
         task.status = TaskStatus.PROCESSING
         db.commit()
         
-        # Configuration metadata setup karein checkpointing ke liye
-        thread_id = "test_id"
-        config = {"configurable": {"thread_id": thread_id}}
-        state = {
+
+        #lang Graph playing here
+        thread_id = str(task_id)                                      # to find check pointer need thread id (super set)
+        config = {"configurable": {"thread_id": thread_id}}       #configration basically is thread id k bases pe hue converastaion ko lega as a memory context
+
+        state = {                                                 #   inital_state defining here
                     "task_id": task_id,
                     "messages": [HumanMessage(content=text)]
                 }
         
-        # Text input ko HumanMessage object me wrap karein
-        response = graph.invoke(
-            state,
-            config=config,
-        )
+        with get_postgres_checkpointer() as checkpointer:
+            graph = get_graph(checkpointer)
+            response = graph.invoke(
+                state,
+                config=config,
+            )
+            result = response["messages"][-1].content
     
-        # State ke aakhri message (Supervisor ka response) se content nikalein
-        result = response["messages"][-1].content
-    
+
+
         task.status = TaskStatus.COMPLETED
         task.result = result
         db.commit()
