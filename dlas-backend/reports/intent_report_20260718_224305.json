@@ -1,0 +1,208 @@
+{
+    "accuracy": 96.0,
+    "total": 25,
+    "passed": 24,
+    "failed": 1,
+    "results": [
+        {
+            "query": "Who is the President of France?",
+            "expected": "general_chat",
+            "predicted": "general_chat",
+            "confidence": 1.0,
+            "reasoning": "The user is asking a factual question about the President of France.",
+            "passed": true
+        },
+        {
+            "query": "Explain Kubernetes.",
+            "expected": "general_chat",
+            "predicted": "general_chat",
+            "confidence": 1.0,
+            "reasoning": "User is asking for an explanation about Kubernetes.",
+            "passed": true
+        },
+        {
+            "query": "What is LangGraph?",
+            "expected": "general_chat",
+            "predicted": "general_chat",
+            "confidence": 1.0,
+            "reasoning": "User is asking for an explanation of LangGraph, indicating a general chat intent.",
+            "passed": true
+        },
+        {
+            "query": "How does FastAPI work?",
+            "expected": "general_chat",
+            "predicted": "general_chat",
+            "confidence": 1.0,
+            "reasoning": "User is asking for an explanation of how FastAPI works, which falls under general chat category.",
+            "passed": true
+        },
+        {
+            "query": "Tell me a joke.",
+            "expected": "general_chat",
+            "predicted": "general_chat",
+            "confidence": 1.0,
+            "reasoning": "User is asking for a joke, which falls under general chat.",
+            "passed": true
+        },
+        {
+            "query": "Need help",
+            "expected": "general_chat",
+            "predicted": "general_chat",
+            "confidence": 1.0,
+            "reasoning": "User is seeking assistance",
+            "passed": true
+        },
+        {
+            "query": "What is my name?",
+            "expected": "general_chat",
+            "predicted": "general_chat",
+            "confidence": 1.0,
+            "reasoning": "The user is asking for personal information which falls under general chat.",
+            "passed": true
+        },
+        {
+            "query": "Who manufactures Dell laptops?",
+            "expected": "general_chat",
+            "predicted": "general_chat",
+            "confidence": 0.9,
+            "reasoning": "The user is asking for factual information related to laptop manufacturing.",
+            "passed": true
+        },
+        {
+            "query": "Thanks",
+            "expected": "general_chat",
+            "predicted": "general_chat",
+            "confidence": 0.9,
+            "reasoning": "User greeting",
+            "passed": true
+        },
+        {
+            "query": "Forget everything",
+            "expected": "general_chat",
+            "predicted": "general_chat",
+            "confidence": 0.9,
+            "reasoning": "User is not specifying any procurement-related information and is asking to forget everything.",
+            "passed": true
+        },
+        {
+            "query": "Need 100 Dell laptops",
+            "expected": "procurement",
+            "predicted": "procurement",
+            "confidence": 1.0,
+            "reasoning": "User is requesting to purchase a specific quantity of Dell laptops.",
+            "passed": true
+        },
+        {
+            "query": "Buy 50 office chairs",
+            "expected": "procurement",
+            "predicted": "procurement",
+            "confidence": 1.0,
+            "reasoning": "The user is requesting to buy a specific quantity of office chairs, which is a clear indication of a procurement intent.",
+            "passed": true
+        },
+        {
+            "query": "Need 500 keyboards",
+            "expected": "procurement",
+            "predicted": "procurement",
+            "confidence": 1.0,
+            "reasoning": "User is clearly mentioning a procurement request for 500 keyboards.",
+            "passed": true
+        },
+        {
+            "query": "Need 100 laptops under \u20b950,000 each",
+            "expected": "procurement",
+            "predicted": "procurement",
+            "confidence": 1.0,
+            "reasoning": "The user is specifying a procurement requirement for 100 laptops under a budget of \u20b950,000 each.",
+            "passed": true
+        },
+        {
+            "query": "Budget is \u20b940 lakh",
+            "expected": "procurement",
+            "predicted": "procurement",
+            "confidence": 1.0,
+            "reasoning": "User mentioned a budget amount, indicating a procurement-related request.",
+            "passed": true
+        },
+        {
+            "query": "Delivery should be next Monday",
+            "expected": "procurement",
+            "predicted": "procurement",
+            "confidence": 0.95,
+            "reasoning": "The user is specifying a delivery timeline, indicating a procurement-related request.",
+            "passed": true
+        },
+        {
+            "query": "Dell",
+            "expected": "procurement",
+            "predicted": "procurement",
+            "confidence": 1.0,
+            "reasoning": "The user mentioned a brand name, which indicates a potential procurement-related query.",
+            "passed": true
+        },
+        {
+            "query": "Laptop",
+            "expected": "procurement",
+            "predicted": "procurement",
+            "confidence": 0.9,
+            "reasoning": "The user is likely interested in buying or discussing laptops for procurement purposes.",
+            "passed": true
+        },
+        {
+            "query": "Use SSD only",
+            "expected": "procurement",
+            "predicted": "general_chat",
+            "confidence": 1.0,
+            "reasoning": "The user is making a general statement about using SSD (Solid State Drive) technology.",
+            "passed": false
+        },
+        {
+            "query": "Actually make it HP",
+            "expected": "procurement",
+            "predicted": "procurement",
+            "confidence": 1.0,
+            "reasoning": "The user is likely indicating a preference for HP products in a procurement context.",
+            "passed": true
+        },
+        {
+            "query": "Quotation",
+            "expected": "procurement",
+            "predicted": "procurement",
+            "confidence": 0.95,
+            "reasoning": "The user is likely requesting a quotation for a procurement purpose.",
+            "passed": true
+        },
+        {
+            "query": "Generate an RFQ",
+            "expected": "procurement",
+            "predicted": "procurement",
+            "confidence": 1.0,
+            "reasoning": "The user is requesting to generate an RFQ (Request for Quotation), which falls under the procurement category.",
+            "passed": true
+        },
+        {
+            "query": "Negotiate this quotation",
+            "expected": "procurement",
+            "predicted": "procurement",
+            "confidence": 0.9,
+            "reasoning": "The user is negotiating a quotation, which falls under the procurement category.",
+            "passed": true
+        },
+        {
+            "query": "Need help buying laptops",
+            "expected": "procurement",
+            "predicted": "procurement",
+            "confidence": 1.0,
+            "reasoning": "User is mentioning purchasing laptops.",
+            "passed": true
+        },
+        {
+            "query": "Compare Dell and HP suppliers",
+            "expected": "procurement",
+            "predicted": "procurement",
+            "confidence": 1.0,
+            "reasoning": "The user is comparing suppliers which falls under procurement activities.",
+            "passed": true
+        }
+    ]
+}

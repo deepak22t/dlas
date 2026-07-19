@@ -19,8 +19,9 @@ class Settings(BaseSettings):
     
     llm_provider: str = "groq"    
     groq_api_key: str
+    open_api_key: str
     groq_model: str
-
+    LANGGRAPH_ALLOWED_MSGPACK_MODULES:str
     @property
     def redis_url(self) -> str:
         return (
