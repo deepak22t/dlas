@@ -5,12 +5,18 @@ from sqlalchemy import UUID, String, DateTime, Enum as SQLEnum
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.database.base import Base
+from sqlalchemy.orm import relationship
+
+
+
 
 class TaskStatus(str, Enum):
     CREATED = "created"
-    PROCESSING = "processing"
+    IN_PROGRESS = "in_progress"
+    WAITING = "waiting"
     COMPLETED = "completed"
     FAILED = "failed"
+    CANCELLED = "cancelled"
 
 
 class Task(Base):
@@ -21,21 +27,15 @@ class Task(Base):
         primary_key=True,
         default=uuid.uuid4,
     )
-
-    text: Mapped[str] = mapped_column(
-        String,
-        nullable=False,
+    title: Mapped[str | None] = mapped_column(
+        String(255),
+        nullable=True,
     )
 
     status: Mapped[TaskStatus] = mapped_column(
         SQLEnum(TaskStatus,name="task_status"),
         default=TaskStatus.CREATED,
         nullable=False,
-    )
-
-    result: Mapped[str | None] = mapped_column(
-        String,
-        nullable=True,
     )
 
     created_at: Mapped[datetime] = mapped_column(
@@ -49,4 +49,17 @@ class Task(Base):
         default=datetime.utcnow,
         onupdate=datetime.utcnow,
         nullable=False,
+    )
+    
+    requirements = relationship(
+    "Requirement",
+    back_populates="task",
+    cascade="all, delete-orphan",
+    )
+
+    messages = relationship(
+    "Message",
+    back_populates="task",
+    cascade="all, delete-orphan",
+    order_by="Message.created_at",
     )

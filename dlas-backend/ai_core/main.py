@@ -10,38 +10,47 @@ logging.getLogger("httpx").setLevel(logging.WARNING)
 print("Starting the workflow")
 
 
-def get_initial_state(message):
+def get_initial_state(message,task_id):
     return {
-        "task_id": "task-1",
+        "task_id":  task_id,
         "messages": [HumanMessage(content=message)],
     }
 
 
 thread_id = str(uuid4())
 
-def get_response(workflow, initial_state):
-    response = workflow.invoke(
+def get_response(workflow, initial_state,task_id):
+    final_state = workflow.invoke(
         initial_state,
-        config={"configurable": {"thread_id": thread_id }},
+        config={"configurable": {"thread_id": task_id }},
     )
     # Specialist agents append AI messages; supervisor-only (end) does not.
-    return response["messages"][-1].content
+    #return final_state["messages"][-1].content
+    return final_state
 
 
-def run_workflow(message):
+def run_workflow(message,task_id):
     with get_postgres_checkpointer() as checkpointer:
         checkpointer.setup()  #setup the checkpointer ye sirf ek baar hi call karna hai future improvements mein
         workflow = get_graph(checkpointer)
         #print(workflow.get_graph().draw_mermaid())
-        initial_state=get_initial_state(message)
-        response = get_response(workflow,initial_state)
+        initial_state=get_initial_state(message,task_id)
+        response = get_response(workflow,initial_state,task_id)
         print("AI:")
         print(response)
+        return response
 
-while True:
-    print("You: ")
-    message = input()
-    if message == 'exit':
-        break
-    else:
-        run_workflow(message)
+
+
+def process_task_without_celery(task_id, user_request):
+   return run_workflow(user_request,task_id)
+
+
+
+# while True:
+#     print("You: ")
+#     message = input()
+#     if message == 'exit':
+#         break
+#     else:
+#         run_workflow(message)
