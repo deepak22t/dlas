@@ -3,22 +3,20 @@ from sqlalchemy.orm import Session
 
 from app.core.config import get_settings
 from app.database.session import get_db
-from app.schemas.chat import ChatRequest
+from app.schemas.chat import ChatRequest, ChatResponse, HistoryResponse
 from app.services.task_service import TaskService
-settings = get_settings()
+from app.models.tenant import User
+from app.api.deps import get_current_user
 
+settings = get_settings()
 chat_router = APIRouter()
 
 
-@chat_router.post("/chat", status_code=202)
+@chat_router.post("/chat", response_model=ChatResponse)
 def handle_chat(
-    request: ChatRequest,
+    request: ChatRequest, 
     db: Session = Depends(get_db),
-):   
-    service = TaskService(db)
-    print("Incoming task_id:", request.task_id)
-    print("Incoming text:", request.text)
-    return service.create_chat_task(
-    text=request.text,
-    task_id=request.task_id,
-)
+    current_user: User = Depends(get_current_user)  
+):  
+    chat_service = TaskService(db)
+    return chat_service.create_chat_task(request=request, user=current_user)

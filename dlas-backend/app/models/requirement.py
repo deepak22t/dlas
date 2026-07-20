@@ -1,7 +1,7 @@
 import uuid
 from enum import Enum
 from datetime import datetime
-
+from sqlalchemy import ForeignKey
 from sqlalchemy import (
     UUID,
     String,
@@ -93,3 +93,11 @@ class Requirement(Base):
         "Task",
         back_populates="requirements",
     )
+    tenant_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("tenants.id"),
+        nullable=False, index=True
+        )
+    user_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("users.id"),
+          nullable=False
+        )

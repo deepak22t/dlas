@@ -2,6 +2,7 @@ from uuid import UUID
 
 from sqlalchemy.orm import Session
 
+from app.models.tenant import User
 from app.models.requirement import (
     Requirement,
     RequirementStatus,
@@ -18,6 +19,7 @@ class RequirementService:
 
     def save_requirement(
         self,
+        user: User,          # <-- NEW: User object accept karo
         task_id: UUID,
         item: str | None,
         brand: str | None = None,
@@ -33,22 +35,18 @@ class RequirementService:
         # Update existing requirement
         # -----------------------------------
         if requirement:
-
             if item is not None:
                 requirement.item = item
-
             if brand is not None:
                 requirement.brand = brand
-
             if quantity is not None:
                 requirement.quantity = quantity
-
             if budget is not None:
                 requirement.budget = budget
-
             if delivery_date is not None:
                 requirement.delivery_date = delivery_date
 
+            # Note: Update karte waqt tenant/user change nahi hote, isliye ye same rahega
             return self.repository.update(requirement)
 
         # -----------------------------------
@@ -56,6 +54,8 @@ class RequirementService:
         # -----------------------------------
         requirement = Requirement(
             task_id=task_id,
+            tenant_id=user.tenant_id,  # <-- NEW: Tenant ID bind ho gaya
+            user_id=user.id,           # <-- NEW: User ID bind ho gaya
             item=item,
             brand=brand,
             quantity=quantity,
@@ -65,7 +65,6 @@ class RequirementService:
         )
 
         return self.repository.create(requirement)
-
     def get_requirement(
         self,
         requirement_id: UUID,
@@ -80,9 +79,8 @@ class RequirementService:
 
         return self.repository.get_by_task_id(task_id)
 
-    def get_all_requirements(self) -> list[Requirement]:
-
-        return self.repository.list_all()
+    def get_all_requirements(self, user: User) -> list[Requirement]:
+        return self.repository.list_by_tenant(tenant_id=user.tenant_id)
 
     def update_requirement_status(
         self,

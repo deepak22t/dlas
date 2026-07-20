@@ -1,6 +1,6 @@
 import uuid
 from datetime import datetime
-
+from sqlalchemy import ForeignKey
 from sqlalchemy import (
     UUID,
     String,
@@ -53,3 +53,11 @@ class Message(Base):
         "Task",
         back_populates="messages",
     )
+    tenant_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("tenants.id"),
+        nullable=False, index=True
+        )
+    user_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("users.id"),
+          nullable=False
+        )

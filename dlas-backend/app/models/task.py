@@ -3,7 +3,7 @@ from enum import Enum
 from datetime import datetime
 from sqlalchemy import UUID, String, DateTime, Enum as SQLEnum
 from sqlalchemy.orm import Mapped, mapped_column
-
+from sqlalchemy import ForeignKey
 from app.database.base import Base
 from sqlalchemy.orm import relationship
 
@@ -63,3 +63,11 @@ class Task(Base):
     cascade="all, delete-orphan",
     order_by="Message.created_at",
     )
+    tenant_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("tenants.id"),
+        nullable=False, index=True
+        )
+    user_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("users.id"),
+          nullable=False
+        )
